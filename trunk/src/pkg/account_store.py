@@ -141,8 +141,8 @@ class AccountStoreDialog:
     def toggle_show_codes(self, button):
         print 'ASD.toggle_show_codes()' 
         cols_visible = self.tvcol2.get_property('visible') and \
-            self.tvcol2.get_property('visible') 
-        button.set_label('Show Codes' if cols_visible else 'Hide Codes')
+            	       self.tvcol2.get_property('visible')
+        button.set_label('Show Codes' if cols_visible else 'Hide Codes') # 3-operator
         self.tvcol2.set_property('visible', not cols_visible)
         self.tvcol3.set_property('visible', not cols_visible)
         

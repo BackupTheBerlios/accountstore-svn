@@ -122,7 +122,7 @@ class AccountManager:
         http://wiki.python.org/moin/HowTo/Sorting/ search 'Key Functions'
         Noticeable client is self.add()
         '''
-        self.accounts.sort(key=lambda act: act.name)
+        self.accounts.sort(key=lambda obj: obj.name)
     
     def csv2list(self, str):
         ''' Minute helper - also used in account_store.py '''
