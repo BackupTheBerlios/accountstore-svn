@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+import re
+import gtk
+import sys  # sys.exit() for debugging
+
+################ class #################
+class Account:
+    '''
+    This class defines an account
+    '''
+    def __init__(self, name, uname, pword):
+        self.name  = name   # name is "key" i.e. uniqueness required & sustained
+        self.uname = uname
+        self.pword = pword
+        
+    def __str__(self):
+        '''
+        This "to string" method makes a comma separated line of an account
+        '''
+        return self.name + ', ' + self.uname + ', ' + self.pword
+
+############### class ##################
+class AccountManager:
+    '''
+    This class stores a list of accounts ('accounts') and has various CRUD 
+    methods for an account in relation to this list. It of course depends on 
+    the preceding Account class
+    '''
+    def __init__(self):
+        ''' When an AccountManager is created populate 'accounts' list '''
+        self.load()
+    
+    def load(self):
+        ''' Load the accounts from file. UC "Show All Accounts" '''
+        self.accounts = []  # List of accounts. Be sure it's empty
+        f = None
+        try:
+            f = open(File.ACCOUNT_FILE, 'r')
+            act_fields = []  # List of the 3 fields of an account
+            for line in f:  # line is a account-field
+                act_fields.append(line.strip())  # strip(): remove trailing \n
+                # When 3 lines are read make an account and add it
+                if len(act_fields) == File.LINES_PER_ACCOUNT: # pt 3 lines pr act
+                    act = Account(act_fields[0], act_fields[1], act_fields[2])
+                    self.accounts.append(act)
+                    act_fields = []  # Reset before reading next account
+        except IOError as io:
+            print str(io)
+        finally:
+            if f:
+                f.close()  # We don't forget this one do we?
+                
+    def persist(self, liststore):
+        ''' 
+        Save the accounts to file
+        '''
+        
+        
+        
+        
+        f = None
+        try:
+            f = open(File.ACCOUNT_FILE, 'w')
+            for act in self.accounts:
+                act_fields = self.csv2list(str(act))  # 'x, y, z' --> ['x', 'y', 'z']
+                act_fields = map(lambda s: s + '\n', act_fields) # ['x', 'y', 'z'] --> ['x\n', 'y\n', 'z\n']
+                map(f.write, act_fields)  # Who needs 'for' when you have 'map'?
+        except IOError as io:
+            print str(io)
+        finally:
+            if f:
+                f.close()  # We don't forget this one do we?
+    
+
+
+############### class ##################
+class File:
+    '''
+    This class contains various file handling constants and also attributes/ 
+    methods assisting the file encryption
+    '''
+    # The AccountManager class knows where to persist it's accounts
+    ACCOUNT_FILE = '/usr/lib/gedit-2/plugins/account_store.txt'
+    LINES_PER_ACCOUNT = 3
+
+######################## Ved kørsel fra kommandolinjen #########################
+if __name__ == "__main__":
+    actman = AccountManager()
+    
+    actman.load()
+    print str(actman)  # ok
+    
+    actman.delete('KNord')
+    print str(actman)  # ok
+    
+    act = Account('American Pizza', '60760024', 'n/a')
+    actman.add(act)
+    print str(actman)  # ok
+    
+    # Persist, load and confirm correct
+    actman.persist()
+    print 'Efter persist()'
+    actman.load()
+    print 'Efter load()'
+    
+    print str(actman)
+    print 'Forventer: American Pizza, Danske Netbank, Dropbox, Super Brugsen'
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
